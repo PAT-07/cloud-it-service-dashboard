@@ -1,0 +1,148 @@
+/* LoginPage.module.css */
+.container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+}
+
+/* ── Brand Panel ─────────────────────────────────── */
+.brandPanel {
+  flex: 1;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.brandBg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+.brandContent { position: relative; z-index: 1; max-width: 380px; }
+
+.logo { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 2.5rem; }
+.logoIcon { font-size: 2rem; }
+.logoText { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px; color: #60a5fa; }
+
+.tagline {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin: 0 0 1rem;
+  color: #f8fafc;
+}
+.subTagline { color: #94a3b8; font-size: 1rem; line-height: 1.6; margin-bottom: 2.5rem; }
+
+.stats { display: flex; gap: 2rem; }
+.stat { display: flex; flex-direction: column; }
+.stat strong { font-size: 1.5rem; font-weight: 700; color: #60a5fa; }
+.stat span   { font-size: 0.75rem; color: #64748b; margin-top: 0.15rem; }
+
+/* ── Form Panel ──────────────────────────────────── */
+.formPanel {
+  width: 480px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.formCard {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  border: 1px solid #e2e8f0;
+}
+.formTitle    { font-size: 1.75rem; font-weight: 700; color: #0f172a; margin: 0 0 0.4rem; }
+.formSubtitle { color: #64748b; font-size: 0.9rem; margin: 0 0 2rem; }
+
+.form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field label { font-size: 0.82rem; font-weight: 600; color: #374151; }
+.field input {
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #f8fafc;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.field input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+  background: #fff;
+}
+
+.submitBtn {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.submitBtn:hover:not(:disabled) { background: #1e40af; }
+.submitBtn:active:not(:disabled) { transform: scale(0.98); }
+.submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.registerLink { text-align: center; font-size: 0.85rem; color: #6b7280; margin-top: 1.2rem; }
+.registerLink a { color: #2563eb; font-weight: 600; text-decoration: none; }
+.registerLink a:hover { text-decoration: underline; }
+
+.demoCredentials {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+}
+.demoTitle { font-size: 0.75rem; font-weight: 600; color: #94a3b8; text-align: center; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.demoGrid  { display: flex; gap: 0.75rem; }
+.demoBtn {
+  flex: 1;
+  padding: 0.55rem;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #475569;
+  transition: background 0.15s;
+}
+.demoBtn:hover { background: #e2e8f0; }
+
+@media (max-width: 768px) {
+  .brandPanel { display: none; }
+  .formPanel  { width: 100%; padding: 1.5rem; }
+}

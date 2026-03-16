@@ -1,0 +1,142 @@
+/* AnalyticsDashboardPage.module.css */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+.pageHeader { margin-bottom: 1.75rem; }
+.pageHeader h1 { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem; }
+.pageHeader p  { color: #64748b; margin: 0; font-size: 0.875rem; }
+
+/* Metric cards */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.metricCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid;
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.metricIcon  { font-size: 1.6rem; }
+.metricValue { font-size: 1.6rem; font-weight: 800; line-height: 1.1; }
+.metricLabel { font-size: 0.8rem; font-weight: 600; color: #374151; margin-top: 0.15rem; }
+.metricSub   { font-size: 0.72rem; color: #94a3b8; margin-top: 0.1rem; }
+
+/* Charts rows */
+.chartsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 768px) { .chartsRow { grid-template-columns: 1fr; } }
+
+.chartCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.chartCard h3 { font-size: 0.9rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem; }
+.chartSub  { font-size: 0.75rem; color: #94a3b8; margin: 0 0 1.25rem; }
+
+.noData {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+/* Pie chart layout */
+.pieLayout {
+  display: flex;
+  align-items: center;
+}
+.pieLegend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-left: 0.5rem;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legendName { color: #475569; flex: 1; text-transform: capitalize; }
+.legendVal  { font-weight: 700; color: #0f172a; }
+
+/* SLA donut */
+.slaDonut {
+  display: flex;
+  align-items: center;
+}
+.slaStats {
+  flex: 1;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.slaNum     { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+.slaLabel   { font-size: 0.8rem; color: #64748b; }
+.slaBreachNum { font-size: 0.85rem; color: #dc2626; font-weight: 600; margin-top: 0.5rem; }
+.slaTarget  { font-size: 0.78rem; color: #94a3b8; margin-top: 0.25rem; }
+
+/* Status breakdown */
+.statusTable {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.statusTable h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 1.25rem;
+}
+.statusGrid { display: flex; flex-direction: column; gap: 0.85rem; }
+.statusRow  {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.statusLabel { font-size: 0.82rem; color: #475569; width: 90px; flex-shrink: 0; }
+.statusBarTrack {
+  flex: 1;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.statusBarFill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+.statusCount { font-size: 0.82rem; font-weight: 700; color: #0f172a; width: 30px; text-align: right; }

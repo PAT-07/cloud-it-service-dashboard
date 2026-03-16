@@ -1,0 +1,173 @@
+/* AdminDashboardPage.module.css */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.pageHeader h1 { font-size: 1.5rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem; }
+.pageHeader p  { color: #64748b; margin: 0; font-size: 0.875rem; }
+.newBtn {
+  padding: 0.6rem 1.2rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.newBtn:hover { background: #1e40af; }
+
+/* KPI grid */
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.kpiCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-top: 3px solid;
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.kpiIcon  { font-size: 1.3rem; margin-bottom: 0.4rem; }
+.kpiValue { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.kpiLabel { font-size: 0.8rem; font-weight: 600; color: #374151; margin-top: 0.2rem; }
+.kpiSub   { font-size: 0.72rem; color: #94a3b8; }
+
+/* SLA alert */
+.slaAlert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: #991b1b;
+}
+.slaAlert button {
+  margin-left: auto;
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Stats row */
+.statsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 640px) { .statsRow { grid-template-columns: 1fr; } }
+
+/* Cards */
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card:last-child { margin-bottom: 0; }
+.card h3 { font-size: 0.9rem; font-weight: 700; color: #0f172a; margin: 0 0 1rem; }
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.cardHeader h3 { margin: 0; font-size: 0.9rem; font-weight: 700; color: #0f172a; }
+.viewAllBtn {
+  font-size: 0.8rem;
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+}
+.viewAllBtn:hover { text-decoration: underline; }
+
+/* Stat bars */
+.statBars { display: flex; flex-direction: column; gap: 0.85rem; }
+.statBar  {}
+.statBarLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: #475569;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.barTrack {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.barFill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* Recent tickets table */
+.recentTable {}
+.recentHead {
+  display: grid;
+  grid-template-columns: 90px 1fr 110px 130px 100px;
+  gap: 0;
+  padding: 0.6rem 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.recentRow {
+  display: grid;
+  grid-template-columns: 90px 1fr 110px 130px 100px;
+  gap: 0;
+  padding: 0.7rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  transition: background 0.12s;
+  border-bottom: 1px solid #f8fafc;
+}
+.recentRow:hover  { background: #f8fafc; }
+.breached         { background: #fff5f5 !important; }
+.breached:hover   { background: #fee2e2 !important; }
+
+.tNum   { font-size: 0.78rem; font-weight: 700; color: #2563eb; font-family: monospace; }
+.tTitle { font-size: 0.85rem; color: #0f172a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 1rem; }
+.tDate  { font-size: 0.78rem; color: #94a3b8; }

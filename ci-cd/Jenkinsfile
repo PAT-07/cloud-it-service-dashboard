@@ -1,0 +1,215 @@
+// ci-cd/Jenkinsfile
+// --------------------------------------------------
+// Production CI/CD pipeline for the Cloud IT Service Dashboard.
+// Stages:
+//   1. Checkout
+//   2. Backend: lint + test
+//   3. Frontend: install + test + build
+//   4. Package Lambda
+//   5. Deploy backend to AWS Lambda
+//   6. Deploy frontend static assets to S3 + invalidate CloudFront
+// --------------------------------------------------
+pipeline {
+
+  agent any
+
+  // ── Environment variables (set real values in Jenkins credentials) ──
+  environment {
+    AWS_REGION           = 'us-east-1'
+    LAMBDA_FUNCTION_NAME = 'cloud-it-service-api'
+    S3_FRONTEND_BUCKET   = 'cloud-it-dashboard-frontend'
+    CLOUDFRONT_DIST_ID   = credentials('CLOUDFRONT_DIST_ID')   // Jenkins secret
+    AWS_ACCESS_KEY_ID    = credentials('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY= credentials('AWS_SECRET_ACCESS_KEY')
+    PYTHON_VERSION       = '3.11'
+    NODE_VERSION         = '20'
+  }
+
+  options {
+    timeout(time: 30, unit: 'MINUTES')
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+  }
+
+  stages {
+
+    // ────────────────────────────────────────────────────────────
+    stage('Checkout') {
+      steps {
+        checkout scm
+        echo "Building branch: ${env.BRANCH_NAME} | commit: ${env.GIT_COMMIT[0..7]}"
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Backend — Install & Lint') {
+      steps {
+        dir('backend/lambda-api') {
+          sh '''
+            python${PYTHON_VERSION} -m venv .venv
+            . .venv/bin/activate
+            pip install --upgrade pip --quiet
+            pip install -r requirements.txt --quiet
+            pip install flake8 pytest httpx --quiet
+            # Lint: stop on any syntax or name errors (E9xx, F821)
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          '''
+        }
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Backend — Unit Tests') {
+      steps {
+        dir('backend/lambda-api') {
+          sh '''
+            . .venv/bin/activate
+            pytest tests/ -v --tb=short --junitxml=test-results.xml
+          '''
+        }
+      }
+      post {
+        always {
+          junit 'backend/lambda-api/test-results.xml'
+        }
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Frontend — Install & Test') {
+      steps {
+        dir('frontend/react-dashboard') {
+          sh '''
+            node --version
+            npm ci --silent
+            CI=true npm test -- --watchAll=false --passWithNoTests
+          '''
+        }
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Frontend — Build') {
+      steps {
+        dir('frontend/react-dashboard') {
+          withCredentials([string(credentialsId: 'REACT_APP_API_URL', variable: 'REACT_APP_API_URL')]) {
+            sh '''
+              npm run build
+            '''
+          }
+        }
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Package Lambda') {
+      steps {
+        dir('backend/lambda-api') {
+          sh '''
+            # Install runtime deps into a 'package' dir (no dev deps)
+            pip install -r requirements.txt \
+              --target ./package \
+              --platform manylinux2014_x86_64 \
+              --implementation cp \
+              --python-version 3.11 \
+              --only-binary=:all: \
+              --quiet
+
+            # Copy source files into package dir
+            cp -r *.py models routes middleware utils package/
+
+            # Zip everything
+            cd package
+            zip -r ../lambda_deployment.zip . -x "*.pyc" -x "__pycache__/*"
+            cd ..
+            echo "Lambda package size: $(du -sh lambda_deployment.zip | cut -f1)"
+          '''
+        }
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Deploy — Lambda') {
+      when {
+        branch 'main'    // only deploy from main branch
+      }
+      steps {
+        dir('backend/lambda-api') {
+          sh '''
+            aws lambda update-function-code \
+              --function-name ${LAMBDA_FUNCTION_NAME} \
+              --zip-file fileb://lambda_deployment.zip \
+              --region ${AWS_REGION}
+
+            # Wait for update to complete before continuing
+            aws lambda wait function-updated \
+              --function-name ${LAMBDA_FUNCTION_NAME} \
+              --region ${AWS_REGION}
+
+            echo "Lambda deployed successfully"
+          '''
+        }
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Deploy — Frontend to S3') {
+      when {
+        branch 'main'
+      }
+      steps {
+        dir('frontend/react-dashboard') {
+          sh '''
+            # Sync build output to S3 (--delete removes stale files)
+            aws s3 sync build/ s3://${S3_FRONTEND_BUCKET}/ \
+              --delete \
+              --cache-control "max-age=31536000,immutable" \
+              --exclude "index.html" \
+              --region ${AWS_REGION}
+
+            # index.html must always be re-fetched by browsers
+            aws s3 cp build/index.html s3://${S3_FRONTEND_BUCKET}/index.html \
+              --cache-control "no-cache,no-store,must-revalidate" \
+              --region ${AWS_REGION}
+
+            echo "Frontend deployed to S3"
+          '''
+        }
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────
+    stage('Invalidate CloudFront Cache') {
+      when {
+        branch 'main'
+      }
+      steps {
+        sh '''
+          aws cloudfront create-invalidation \
+            --distribution-id ${CLOUDFRONT_DIST_ID} \
+            --paths "/*" \
+            --region ${AWS_REGION}
+          echo "CloudFront cache invalidated"
+        '''
+      }
+    }
+
+  } // end stages
+
+  // ────────────────────────────────────────────────────────────────
+  post {
+    success {
+      echo "✅ Pipeline completed successfully for ${env.BRANCH_NAME}@${env.GIT_COMMIT[0..7]}"
+    }
+    failure {
+      echo "❌ Pipeline FAILED — check stage logs above"
+      // Add Slack/email notification here:
+      // slackSend(channel: '#it-ops-alerts', message: "Deploy FAILED: ${env.BUILD_URL}")
+    }
+    always {
+      // Clean workspace to avoid disk bloat on the agent
+      cleanWs()
+    }
+  }
+
+}
