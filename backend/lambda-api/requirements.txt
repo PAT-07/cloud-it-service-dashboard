@@ -1,5 +1,4 @@
 # Cloud IT Service Dashboard - Backend Dependencies
-
 fastapi==0.111.0
 mangum==0.17.0
 sqlalchemy==2.0.30
@@ -13,3 +12,4 @@ pydantic-settings==2.2.1
 python-dotenv==1.0.1
 uvicorn==0.29.0
 boto3==1.34.102
+pydantic-core==2.18.2
