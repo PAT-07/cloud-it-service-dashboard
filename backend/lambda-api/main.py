@@ -20,7 +20,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     # allow_origins=settings.origins_list,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000" ,"https://cloud-it-service-dashboard.vercel.app", "https://cloud-it-service-dashboard-cmpb2bzse-pat-07s-projects.vercel.app" ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
