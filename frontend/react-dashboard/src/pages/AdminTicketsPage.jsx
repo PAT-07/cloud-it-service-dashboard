@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTickets } from '../hooks/useTickets';
 import { ticketsAPI } from '../services/api';
-import { PriorityBadge, StatusBadge } from '../components/common/Badge';
+import { PriorityBadge} from '../components/common/Badge';
 import Spinner from '../components/common/Spinner';
 import toast from 'react-hot-toast';
 import { formatDate, ticketLabel, isSLABreached, CATEGORY_ICONS } from '../utils/helpers';
