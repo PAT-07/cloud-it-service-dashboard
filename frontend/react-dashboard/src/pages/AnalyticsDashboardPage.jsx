@@ -3,7 +3,7 @@
 import React from 'react';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import { useAnalytics } from '../hooks/useTickets';
 import Spinner from '../components/common/Spinner';

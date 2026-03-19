@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTicket } from '../hooks/useTickets';
 import { useAuth } from '../context/AuthContext';
-import { ticketsAPI, usersAPI } from '../services/api';
+import { ticketsAPI } from '../services/api';
 import { PriorityBadge, StatusBadge } from '../components/common/Badge';
 import Spinner from '../components/common/Spinner';
 import toast from 'react-hot-toast';
