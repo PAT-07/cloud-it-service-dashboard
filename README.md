@@ -575,6 +575,3 @@ Open Tickets =
 
 ---
 
-## License
-
-MIT — see LICENSE for details.
