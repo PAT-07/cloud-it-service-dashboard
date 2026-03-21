@@ -19,8 +19,12 @@ app = FastAPI(
 # CORS — allow the React front-end origins defined in env
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=settings.origins_list,
-    allow_origins=["http://localhost:3000" ,"https://cloud-it-service-dashboard.vercel.app", "https://cloud-it-service-dashboard-cmpb2bzse-pat-07s-projects.vercel.app" ],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://cloud-it-service-dashboard.vercel.app",
+        "https://cloud-it-service-dashboard-cmpb2bzse-pat-07s-projects.vercel.app",
+        "https://cloud-it-service-dashboard-5r768sjj0-pat-07s-projects.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
