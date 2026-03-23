@@ -34,7 +34,10 @@ class Settings(BaseSettings):
 
     @property
     def origins_list(self) -> list[str]:
-        return [o.strip() for o in self.allowed_origins.split(",")]
+        origins = [o.strip() for o in self.allowed_origins.split(",")]
+    # Also always allow the main Vercel domain
+        origins.append("https://cloud-it-service-dashboard.vercel.app")
+        return origins
 
     class Config:
         env_file = ".env"
